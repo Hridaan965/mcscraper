@@ -30,7 +30,7 @@ async def list_servers(ctx):
     
     await ctx.send("The registered servers are: \n"+"\n".join(resp))
 
-@bot.command(pass_context=True, help="States the current state of the mentioned server")
+@bot.command(pass_context=True, help="Shows the current status of the mentioned server")
 async def status(ctx, srv_no):
     try:
         srv_name = list(servers.keys())[int(srv_no)-1]
@@ -40,40 +40,40 @@ async def status(ctx, srv_no):
     except IndexError:
         await ctx.send("Such a entry do not exist")
 
-@bot.command(pass_context=True, help="Startes the mentioned server")
+@bot.command(pass_context=True, help="Starts the mentioned server")
 async def start(ctx, srv_no):
     try:
         srv_name = list(servers.keys())[int(srv_no)-1]
         api = AternosAPI(credentials["common_cookies"], servers[srv_name]["server_cookie"])
         sresp = api.StartServer()
-        if sresp != "something went wrong":
+        if sresp != "Something went wrong":
             await ctx.send(srv_name+" "+sresp)
         else :
             await ctx.send(sresp)
         api.driver.quit()
     except IndexError:
-        await ctx.send("Such a entry do not exist")
+        await ctx.send("Such an entry does not exist")
     except TypeError:
-        await ctx.send("something went wrong")
+        await ctx.send("Something went wrong")
 
-@bot.command(pass_context=True, help="Stopes the mentioned server REQUIRED ROLE: MCS manager")
-@commands.has_role("MCS manager")
+@bot.command(pass_context=True, help="Stops the mentioned server (`REQUIRED ROLE: Admin`)")
+@commands.has_role("Admin")
 async def stop(ctx, srv_no):
     try:
         srv_name = list(servers.keys())[int(srv_no)-1]
         api = AternosAPI(credentials["common_cookies"], servers[srv_name]["server_cookie"])
         sresp = api.StopServer()
-        if sresp != "something went wrong":
+        if sresp != "Something went wrong":
             await ctx.send(srv_name+" "+sresp)
         else :
             await ctx.send(sresp)
         api.driver.quit()
     except IndexError:
-        await ctx.send("Such a entry do not exist")
+        await ctx.send("Such an entry does not exist")
     except TypeError:
-        await ctx.send("something went wrong")
+        await ctx.send("Something went wrong")
 
-@bot.command(pass_context=True, help="States the information about the mentioned server")
+@bot.command(pass_context=True, help="Shows the information about the mentioned server")
 async def getinfo(ctx, srv_no):
     try:
         srv_name = list(servers.keys())[int(srv_no)-1]
@@ -82,7 +82,7 @@ async def getinfo(ctx, srv_no):
         await ctx.send(sresp["ip"].split(".")[0]+"\nIP: "+sresp["ip"]+"\nPort: "+sresp["port"]+"\nSoftware: "+sresp["software"]+"\nVersion: "+sresp["version"]+"\nPlayers: "+sresp["players"]+"\nStatus: "+sresp["status"])
         api.driver.quit()
     except IndexError:
-        await ctx.send("Such a entry do not exist")
+        await ctx.send("Such an entry does not exist")
 
 @bot.event
 async def on_command_error(ctx, error):
